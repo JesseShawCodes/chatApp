@@ -1,14 +1,13 @@
-var app = require('express')()
+const express = require('express');
+const app = express()
 var server = require('http').Server(app)
 var io = require('socket.io')(server);
 const port = 3000;
 
-server.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-})
+app.use(express.static('public'))
+app.use(express.static('files'))
 
 app.get('/', function(req,res) {
-    res.sendFile(__dirname + '/public/index.html')
 })
 
 io.on('connection', (socket) => {
@@ -18,3 +17,8 @@ io.on('connection', (socket) => {
         console.log(data)
     })
 })
+
+server.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+})
+
