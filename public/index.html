@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <title>Chatter</title>
-    <link href="index.css" rel="stylesheet" type="text/css" />
+    <link href="/index.css" rel="stylesheet" type="text/css" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
@@ -12,16 +12,14 @@
     <div class="row">
       <ul id="messages"></ul>
     </div>
-          <div class="row">
-            <form action="">
-          <div class="input-group mb-3">
-            <input id="m" autocomplete="off" type="text" class="form-control" placeholder="Message..." aria-label="Message..." aria-describedby="button-addon2">
-            <div class="input-group-append">
-              <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Send</button>
-            </div>
-          </div>
-          </form>
-          </div>
+    <div class="row">
+      <form>
+        <div class="input-group mb-3">
+          <input id="m" autocomplete="off" type="text" class="form-control" placeholder="Message..." aria-label="Message..." aria-describedby="button-addon2">
+          <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Send</button>
+        </div>
+      </form>
+    </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
@@ -29,10 +27,16 @@
     <script src="/socket.io/socket.io.js">
     </script>
     <script>
-      const socket = io.connect('http://localhost:3000')
-      socket.on('message', (data)=> {
+      const socket = io();
+      $('form').submit(()=>{
+        socket.emit('message', $('#m').val());
+        $('#m').val('');
+        return false; 
+      })
+
+      socket.on('message', function(data) {
+        $("#messages").append($('<li>').text(data));
         console.log(data);
-        socket.emit('another event', {jeremy: 'I am great. Thank you!'})
       })
     </script>
   </body>
