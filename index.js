@@ -10,6 +10,18 @@ app.use(express.static('files'))
 app.get('/', function(req,res) {
 })
 
+app.get('/javascript', function(req,res) {
+    res.sendFile(__dirname + '/public/javascript.html')
+})
+
+app.get('/swift', function(req,res) {
+    res.sendFile(__dirname + '/public/swift.html')
+})
+
+app.get('/css', function(req,res) {
+    res.sendFile(__dirname + '/public/css.html')
+})
+
 const tech = io.of('/tech');
 
 tech.on('connection', (socket) => {
